@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="yolo.bachkhoa.com.smilealarm.Fragment.FriendListFragment">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/friend_list"
+        android:layout_alignParentStart="true"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:choiceMode="singleChoice"
+        android:listSelector="#c4c4c4"/>
+
+</FrameLayout>

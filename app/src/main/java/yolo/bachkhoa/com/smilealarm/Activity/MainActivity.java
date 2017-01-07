@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
+import yolo.bachkhoa.com.smilealarm.Fragment.FriendListFragment;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
 import yolo.bachkhoa.com.smilealarm.R;
 
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return AlarmFragment.newInstance();
                 case 2:
-                    return AlarmFragment.newInstance();
+                    return FriendListFragment.newInstance();
                 default:
                     return null;
             }

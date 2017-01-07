@@ -2,4 +2,5 @@
     <string name="app_name">SmileAlarm</string>
     <string name="facebook_app_id">1724358514546249</string>
     <string name="fb_login_protocol_scheme">fb654630084662332</string>
+    <string name="subscription_key">bcbf41102d9545e98593d387a29bb98d</string>
 </resources>

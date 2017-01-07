@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import yolo.bachkhoa.com.smilealarm.Activity.MainActivity;
+import yolo.bachkhoa.com.smilealarm.Activity.TurnOffActivity;
 import yolo.bachkhoa.com.smilealarm.R;
 
 /**
@@ -32,7 +33,7 @@ public class AlarmService extends IntentService {
     }
 
     private void takePicture() {
-        Intent takePictureIntent = new Intent(this.getApplicationContext(), MainActivity.class);
+        Intent takePictureIntent = new Intent(this.getApplicationContext(), TurnOffActivity.class);
         takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(takePictureIntent);
     }

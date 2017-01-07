@@ -102,9 +102,10 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return AlarmFragment.newInstance();
                 case 1:
+                    Log.d("a", UserService.getUserImageUrl().toString());
                     return TimeLineFragment.newInstance();
                 case 2:
-                    return AlarmFragment.newInstance();
+                    return TimeLineFragment.newInstance();
                 default:
                     return null;
             }

@@ -9,7 +9,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
 import yolo.bachkhoa.com.smilealarm.Service.StorageService;
@@ -35,7 +37,7 @@ public class AlarmImageModel extends Model{
 
     @Override
     protected void addMainCallback() {
-        alarmRef.orderByKey().limitToLast(10).addChildEventListener(new ChildEventListener() {
+        alarmRef.orderByKey().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
                 final AlarmImageEntity alarmImageEntity = new AlarmImageEntity();
@@ -44,8 +46,12 @@ public class AlarmImageModel extends Model{
                 StorageService.getImage(dataSnapshot.child("ImageName").getValue().toString(), new EventHandle<Bitmap>() {
                     @Override
                     public void onSuccess(Bitmap o) {
+                        Log.d("Test", "load complete");
                         alarmImageEntity.setImage(o);
                         addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
+                        for(FirebaseCallback<String> callback: callbackList){
+                            callback.onInserted(dataSnapshot.getKey());
+                        }
                     }
 
                     @Override
@@ -78,33 +84,10 @@ public class AlarmImageModel extends Model{
         });
     }
 
+    List<FirebaseCallback<String>> callbackList = new ArrayList<>();
+
     public void addCallback(final FirebaseCallback<String> callback){
-        alarmRef.orderByKey().limitToLast(10).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                callback.onInserted(dataSnapshot.getKey());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                callback.onUpdated(dataSnapshot.getKey());
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                callback.onDeleted(dataSnapshot.getKey());
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        callbackList.add(callback);
     }
 
     public void insert(Date time, Bitmap image, final String text){

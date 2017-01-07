@@ -127,6 +127,7 @@ public class TimeLineFragment extends Fragment {
 
             AlarmImageEntity item = entity_map.get(id_list.get(position));
             try {
+                Log.d("a", UserService.getUserImageUrl().toString());
                 Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(UserService.getUserImageUrl().toString()).getContent());
                 userImage.setImageBitmap(bitmap);
                 username.setText(UserService.getUserDisplayName() + "\n" + id_list.get(position));

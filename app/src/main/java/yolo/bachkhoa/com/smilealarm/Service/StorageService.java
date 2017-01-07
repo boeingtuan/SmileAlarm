@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +43,7 @@ public class StorageService {
 
     public static void getImage(String name, final EventHandle<Bitmap> eventHandle){
         StorageReference ref = storageRef.child(name);
-
+        Log.d("Test", ref.getPath());
         final long ONE_MEGABYTE = 442661L;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override

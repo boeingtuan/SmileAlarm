@@ -1,19 +1,20 @@
 package yolo.bachkhoa.com.smilealarm.Entity;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 import java.util.HashMap;
 
-public class FriendEntity {
-    Image avatar;
+public class UserEntity {
+    Bitmap avatar;
     String name;
     HashMap<String, String> alarmImage;
 
-    public Image getAvatar() {
+    public Bitmap getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Image avatar) {
+    public void setAvatar(Bitmap avatar) {
         this.avatar = avatar;
     }
 

@@ -5,10 +5,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
-import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
-import yolo.bachkhoa.com.smilealarm.Entity.FriendEntity;
+import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 
-public class FriendModel extends Model<FriendEntity>{
+public class FriendModel extends Model<UserEntity>{
     private static String REFERENCE_NAME = "Friend";
     private DatabaseReference friendRef;
 
@@ -33,14 +32,14 @@ public class FriendModel extends Model<FriendEntity>{
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final String friendToken = dataSnapshot.getKey();
-                getFriendInfo(friendToken, new EventHandle<FriendEntity>() {
+                getFriendInfo(friendToken, new EventHandle<UserEntity>() {
                     @Override
-                    public void onSuccess(FriendEntity o) {
+                    public void onSuccess(UserEntity o) {
                         addObjectToMap(friendToken, o);
                     }
 
                     @Override
-                    public void onError(FriendEntity o) {
+                    public void onError(String o) {
 
                     }
                 });

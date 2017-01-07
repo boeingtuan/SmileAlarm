@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
 import yolo.bachkhoa.com.smilealarm.R;
+import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
 public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -57,22 +58,19 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                getSupportActionBar().setTitle(tabName[position]);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
         mViewPager.setCurrentItem(0);
-        getSupportActionBar().setTitle(tabName[mViewPager.getCurrentItem()]);
+        getSupportActionBar().setTitle("Hello " + UserService.getUserDisplayName().split(" ")[0]);
     }
 
     @Override

@@ -9,5 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="yolo.bachkhoa.com.smilealarm.Activity.LoginActivity">
-
+    <com.facebook.login.widget.LoginButton
+    	android:id="@+id/button_facebook_login"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_gravity="center_horizontal"
+    	android:layout_marginTop="30dp"
+    	android:layout_marginBottom="30dp" /> 
 </RelativeLayout>

@@ -114,10 +114,10 @@ public class FriendListFragment extends Fragment {
             row = inflater.inflate(R.layout.friend_row, parent, false);
 
             final TextView name = (TextView) row.findViewById(R.id.name);
-            final TextView id = (TextView) row.findViewById(R.id.id);
+            //final TextView id = (TextView) row.findViewById(R.id.id);
             FriendObject object = friendList.get(position);
             name.setText(object.getName());
-            id.setText(object.getId());
+            //id.setText(object.getId());
             return row;
         }
     }

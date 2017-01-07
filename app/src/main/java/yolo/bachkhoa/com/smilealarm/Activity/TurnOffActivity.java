@@ -35,7 +35,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import yolo.bachkhoa.com.smilealarm.Model.AlarmImageModel;
 import yolo.bachkhoa.com.smilealarm.R;
+import yolo.bachkhoa.com.smilealarm.Service.StorageService;
 
 /**
  * Created by Tuân on 07/01/2017.
@@ -165,6 +167,12 @@ public class TurnOffActivity extends Activity {
             Button share = (Button) findViewById(R.id.share);
             if (result && mediaPlayer != null && mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
+                share.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlarmImageModel.getInstance().insert(new Date(), StorageService.scaleBitmap(mBitmap, 512, 512), "Have a nice day");
+                    }
+                });
                 share.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Have a nice day, best luck for you!", Toast.LENGTH_SHORT).show();
             } else {

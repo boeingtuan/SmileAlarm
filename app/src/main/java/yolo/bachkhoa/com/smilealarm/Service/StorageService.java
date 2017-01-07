@@ -2,6 +2,9 @@ package yolo.bachkhoa.com.smilealarm.Service;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -44,7 +47,7 @@ public class StorageService {
     public static void getImage(String name, final EventHandle<Bitmap> eventHandle){
         StorageReference ref = storageRef.child(name);
         Log.d("Test", ref.getPath());
-        final long ONE_MEGABYTE = 442661L;
+        final long ONE_MEGABYTE = 512 * 512;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -57,5 +60,15 @@ public class StorageService {
                 eventHandle.onError(exception.getMessage());
             }
         });
+    }
+
+    public static Bitmap scaleBitmap(Bitmap bitmap, int wantedWidth, int wantedHeight) {
+        Bitmap output = Bitmap.createBitmap(wantedWidth, wantedHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        Matrix m = new Matrix();
+        m.setScale((float) wantedWidth / bitmap.getWidth(), (float) wantedHeight / bitmap.getHeight());
+        canvas.drawBitmap(bitmap, m, new Paint());
+
+        return output;
     }
 }

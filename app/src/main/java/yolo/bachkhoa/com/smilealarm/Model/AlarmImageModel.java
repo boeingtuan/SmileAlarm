@@ -9,6 +9,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +51,7 @@ public class AlarmImageModel extends Model{
                         Log.d("Test", "load complete");
                         alarmImageEntity.setImage(o);
                         addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
-                        for(FirebaseCallback<String> callback: callbackList){
+                        for (FirebaseCallback<String> callback : callbackList) {
                             callback.onInserted(dataSnapshot.getKey());
                         }
                     }
@@ -90,13 +92,14 @@ public class AlarmImageModel extends Model{
         callbackList.add(callback);
     }
 
-    public void insert(Date time, Bitmap image, final String text){
+    public void insert(final Date time, Bitmap image, final String text){
         final String name = FirebaseAuth.getInstance().getCurrentUser().getUid() + time.getTime();
         StorageService.saveImage(name, image, new EventHandle<String>() {
             @Override
             public void onSuccess(String o) {
-                DatabaseReference newImage = alarmRef.push();
-                newImage.child("FileName").setValue(name);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                DatabaseReference newImage = alarmRef.child(df.format(time));
+                newImage.child("ImageName").setValue(name);
                 newImage.child("Text").setValue(text);
             }
 

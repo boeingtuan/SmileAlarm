@@ -45,7 +45,29 @@ public class FriendListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (friendList.size() == 0) {
-            // Inflate the layout for this fragment
+            Bundle params = new Bundle();
+            params.putString("fields", "email,name,id");
+            GraphRequest graphMeRequest = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(
+                                JSONObject jsonObject,
+                                GraphResponse response) {
+                            // Application code for users friends
+                            //Log.d("friend123", jsonObject.toString());
+                            FriendObject friend = null;
+                            try {
+                                friend = new FriendObject(jsonObject.getString("name"), jsonObject.getString("id"), jsonObject.getString("email"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            friendList.add(friend);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+            graphMeRequest.setParameters(params);
+            graphMeRequest.executeAsync();
             GraphRequest graphRequest = GraphRequest.newMyFriendsRequest(
                     AccessToken.getCurrentAccessToken(),
                     new GraphRequest.GraphJSONArrayCallback() {
@@ -58,17 +80,19 @@ public class FriendListFragment extends Fragment {
                                 JSONArray friends = response.getJSONObject().getJSONArray("data");
                                 for (int i = 0; i < friends.length(); i++) {
                                     JSONObject object = friends.getJSONObject(i);
-                                    Log.d("friend123", object.toString());
-                                    FriendObject friend = new FriendObject(object.getString("name"), object.getString("id"));
+                                    //Log.d("friend123", object.toString());
+
+                                    FriendObject friend = new FriendObject(object.getString("name"), object.getString("id"), object.getString("email"));
                                     friendList.add(friend);
                                 }
-                                Log.d("friend123", response.getJSONObject().getJSONArray("data").toString());
+                                //Log.d("friend123", response.getJSONObject().getJSONArray("data").toString());
                                 adapter.notifyDataSetChanged();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     });
+            graphRequest.setParameters(params);
             graphRequest.executeAsync();
         }
 

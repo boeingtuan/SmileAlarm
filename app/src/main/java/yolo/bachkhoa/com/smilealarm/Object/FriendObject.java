@@ -4,9 +4,10 @@ package yolo.bachkhoa.com.smilealarm.Object;
  * Created by Son Nguyen Vu 07 on 07-Jan-17.
  */
 public class FriendObject {
-    public FriendObject(String name, String id) {
+    public FriendObject(String name, String id, String email) {
         this.name = name;
         this.id = id;
+        this.email = email;
     }
 
     public String getName() {
@@ -28,4 +29,14 @@ public class FriendObject {
     }
 
     private String id;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
 }

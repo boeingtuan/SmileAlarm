@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
+import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
 import yolo.bachkhoa.com.smilealarm.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.action_logout){
+            AuthenticateModel.getInstance().logoutHandle();
+            super.onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -5,16 +5,16 @@ import android.media.Image;
 import java.util.HashMap;
 
 public class FriendEntity {
-    Image profileImage;
+    Image avatar;
     String name;
     HashMap<String, String> alarmImage;
 
-    public Image getProfileImage() {
-        return profileImage;
+    public Image getAvatar() {
+        return avatar;
     }
 
-    public void setProfileImage(Image profileImage) {
-        this.profileImage = profileImage;
+    public void setAvatar(Image avatar) {
+        this.avatar = avatar;
     }
 
     public String getName() {

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -74,6 +75,7 @@ public class AuthenticateModel {
     }
 
     public void logoutHandle(){
-    	mAuth.signOut();
+        mAuth.signOut();
+        LoginManager.getInstance().logOut();
     }
 }

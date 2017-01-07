@@ -2,9 +2,12 @@ package yolo.bachkhoa.com.smilealarm.Model;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -39,6 +42,7 @@ public class AuthenticateModel {
     public void registerHandle(String token, final EventHandle eventHandle, Activity activity){
     	loginHandle(token, new EventHandle(){
     		public void onSuccess(Object o){
+                Log.d("SmileLogin", "Test");
     			DatabaseReference user =  mUser.child(mAuth.getCurrentUser().getUid());
     			user.child("AlarmList").setValue(0);
     		    user.child("AlarmImage").setValue(0);

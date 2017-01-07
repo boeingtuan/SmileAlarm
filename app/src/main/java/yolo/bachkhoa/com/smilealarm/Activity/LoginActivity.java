@@ -10,8 +10,10 @@ import android.util.Log;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.FirebaseApp;
 
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
@@ -30,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         if (AuthenticateModel.getInstance().checkUserLogin()){
@@ -43,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("Login", "facebook:onSuccess:" + loginResult);
+                Log.d("SmileLogin", "facebook:onSuccess:" + loginResult);
                 AuthenticateModel.getInstance().registerHandle(loginResult.getAccessToken().getToken(), new EventHandle() {
                     @Override
                     public void onSuccess(Object o) {
@@ -69,13 +73,19 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-                Log.d("Login", "facebook:onCancel");
+                Log.d("SmileLogin", "facebook:onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("Login", "facebook:onError", error);
+                Log.d("SmileLogin", "facebook:onError", error);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

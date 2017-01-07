@@ -20,25 +20,8 @@ import java.io.IOException;
 
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
-    public MediaPlayer mediaPlayer = new MediaPlayer();
-
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri == null) {
-            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-        try {
-            mediaPlayer.setDataSource(context, alarmUri);
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.prepare();
-            mediaPlayer.setLooping(true);
-
-            mediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         //this will send a notification message
         ComponentName comp = new ComponentName(context.getPackageName(),
                 AlarmService.class.getName());

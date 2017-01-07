@@ -18,6 +18,7 @@ import com.google.firebase.FirebaseApp;
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
+import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
 public class LoginActivity extends AppCompatActivity {
     public static String[] FACEBOOK_PERMISSIONS = {
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         if (AuthenticateModel.getInstance().checkUserLogin()){
+            UserService.init();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
         }
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError(Object o) {
+                    public void onError(String o) {
                         new AlertDialog.Builder(LoginActivity.this)
                                 .setTitle("Error")
                                 .setMessage((String) o)

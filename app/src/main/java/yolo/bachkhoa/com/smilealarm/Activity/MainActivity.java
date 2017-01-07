@@ -22,7 +22,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
+import yolo.bachkhoa.com.smilealarm.Fragment.TimeLineFragment;
+import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
 import yolo.bachkhoa.com.smilealarm.R;
+import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
 public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -65,22 +68,19 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                getSupportActionBar().setTitle(tabName[position]);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
         mViewPager.setCurrentItem(0);
-        getSupportActionBar().setTitle(tabName[mViewPager.getCurrentItem()]);
+        getSupportActionBar().setTitle("Hello " + UserService.getUserDisplayName().split(" ")[0]);
     }
 
     @Override
@@ -92,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.action_logout){
+            AuthenticateModel.getInstance().logoutHandle();
+            super.onBackPressed();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -107,9 +111,10 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return AlarmFragment.newInstance();
                 case 1:
-                    return AlarmFragment.newInstance();
+                    Log.d("a", UserService.getUserImageUrl().toString());
+                    return TimeLineFragment.newInstance();
                 case 2:
-                    return AlarmFragment.newInstance();
+                    return TimeLineFragment.newInstance();
                 default:
                     return null;
             }

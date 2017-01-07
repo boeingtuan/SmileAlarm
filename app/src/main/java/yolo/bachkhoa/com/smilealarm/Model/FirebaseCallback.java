@@ -1,6 +1,6 @@
 package yolo.bachkhoa.com.smilealarm.Model;
-public interface FirebaseCallback {
-	public void onInserted(Object o);
-	public void onUpdated(Object o);
-	public void onDeleted(Object o);
+public interface FirebaseCallback<T> {
+	public void onInserted(T o);
+	public void onUpdated(T o);
+	public void onDeleted(T o);
 }

@@ -1,12 +1,24 @@
 package yolo.bachkhoa.com.smilealarm.Entity;
 
+import android.graphics.Bitmap;
+
 public class AlarmImageEntity {
-    String url;
-    public String getUrl(){
-        return url;
+    Bitmap image;
+    String text;
+
+    public Bitmap getImage() {
+        return image;
     }
 
-    public void setUrl(String url){
-        this.url = url;
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

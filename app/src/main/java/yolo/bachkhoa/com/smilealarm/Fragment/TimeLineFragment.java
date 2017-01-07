@@ -30,6 +30,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -127,14 +129,12 @@ public class TimeLineFragment extends Fragment {
 
             AlarmImageEntity item = entity_map.get(id_list.get(position));
             try {
-                Log.d("a", UserService.getUserImageUrl().toString());
-                Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(UserService.getUserImageUrl().toString()).getContent());
-                userImage.setImageBitmap(bitmap);
                 username.setText(UserService.getUserDisplayName() + "\n" + id_list.get(position));
                 alarmImage.setImageBitmap(item.getImage());
                 alarmText.setText(item.getText());
+                Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
             } catch (Exception e){
-                Log.d("SmileTimeline", "Can't load image");
+                Log.d("SmileTimeline", "Can't load image " + e.getMessage());
             }
             return row;
         }

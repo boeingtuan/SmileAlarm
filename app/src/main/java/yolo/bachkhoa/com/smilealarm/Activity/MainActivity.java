@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
+import yolo.bachkhoa.com.smilealarm.Fragment.TimeLineFragment;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return AlarmFragment.newInstance();
                 case 1:
-                    return AlarmFragment.newInstance();
+                    return TimeLineFragment.newInstance();
                 case 2:
                     return AlarmFragment.newInstance();
                 default:

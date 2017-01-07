@@ -64,6 +64,17 @@ public class AuthenticateModel {
                             user.child("Info").child("Avatar").setValue(imageUri.toString());
                         }
                         eventHandle.onSuccess(o);
+                        UserService.getFacebookToken(new EventHandle<String>() {
+                            @Override
+                            public void onSuccess(String o) {
+                                Log.d("Test", o);
+                            }
+
+                            @Override
+                            public void onError(String o) {
+
+                            }
+                        });
                     }
 
                     @Override

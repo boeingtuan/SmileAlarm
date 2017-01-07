@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class Model<T>{
-    protected HashMap<String, T> entity_map;
-    protected List<String> id_list;
+    public HashMap<String, T> entity_map;
+    public List<String> id_list;
 
     protected Model(){
         entity_map = new HashMap<>();

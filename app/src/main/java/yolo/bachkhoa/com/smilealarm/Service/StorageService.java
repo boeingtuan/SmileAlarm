@@ -40,11 +40,11 @@ public class StorageService {
         return null;
     }
 
-    public static void getImage(String url, final EventHandle<Bitmap> eventHandle){
-        StorageReference islandRef = storageRef.child("images/island.jpg");
+    public static void getImage(String name, final EventHandle<Bitmap> eventHandle){
+        StorageReference ref = storageRef.child(name);
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        final long ONE_MEGABYTE = 442661L;
+        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);

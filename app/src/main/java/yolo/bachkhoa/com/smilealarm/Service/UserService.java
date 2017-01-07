@@ -23,6 +23,7 @@ import java.util.List;
 
 import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandleWithKey;
 
 public class UserService {
 
@@ -54,35 +55,35 @@ public class UserService {
         });
     }
 
-    public static void getUserList(List<String> friendUids, final EventHandle<UserEntity> eventHandle){
-        for (String uid: friendUids) {
-            userRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    final UserEntity userEntity = new UserEntity();
-                    userEntity.setName(dataSnapshot.child("Info").child("Username").getValue().toString());
-                    String avatarUrl = dataSnapshot.child("Info").child("Avatar").getValue().toString();
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(avatarUrl).getContent());
-                        userEntity.setAvatar(bitmap);
-                    } catch (Exception e){
-                        eventHandle.onError("Can't load image");
-                    }
-                    Iterator<DataSnapshot> alarmImages = dataSnapshot.child("AlarmImage").getChildren().iterator();
-                    HashMap<String, String> userAlarm = new HashMap<>();
-                    while(alarmImages.hasNext()){
-                        DataSnapshot alarmImage = alarmImages.next();
-                        userAlarm.put(alarmImage.getKey(), alarmImage.getValue().toString());
-                    }
-                    userEntity.setAlarmImage(userAlarm);
-                    eventHandle.onSuccess(userEntity);
+    public static void getUserList(String uid, final EventHandleWithKey<String, UserEntity> eventHandle){
+        userRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final UserEntity userEntity = new UserEntity();
+                userEntity.setName(dataSnapshot.child("Info").child("Username").getValue().toString());
+                String avatarUrl = dataSnapshot.child("Info").child("Avatar").getValue().toString();
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(avatarUrl).getContent());
+                    userEntity.setAvatar(bitmap);
+                } catch (Exception e){
+                    eventHandle.onError("Can't load image");
                 }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    eventHandle.onError(null);
+                Iterator<DataSnapshot> alarmImages = dataSnapshot.child("AlarmImage").getChildren().iterator();
+                HashMap<String, String> userAlarm = new HashMap<>();
+                int i = 0;
+                while(alarmImages.hasNext()){
+                    if(i++ > 10)
+                        break;
+                    DataSnapshot alarmImage = alarmImages.next();
+                    userAlarm.put(alarmImage.getKey(), alarmImage.getValue().toString());
                 }
-            });
-        }
+                userEntity.setAlarmImage(userAlarm);
+                eventHandle.onSuccess(dataSnapshot.getKey(), userEntity);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                    eventHandle.onError("Error");
+                }
+        });
     }
 }

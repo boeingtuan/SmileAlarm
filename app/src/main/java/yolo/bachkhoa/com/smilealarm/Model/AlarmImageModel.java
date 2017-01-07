@@ -37,7 +37,7 @@ public class AlarmImageModel extends Model{
 
     @Override
     protected void addMainCallback() {
-        alarmRef.orderByKey().addChildEventListener(new ChildEventListener() {
+        alarmRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
                 final AlarmImageEntity alarmImageEntity = new AlarmImageEntity();

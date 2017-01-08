@@ -27,6 +27,11 @@ import org.json.JSONObject;
 
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import yolo.bachkhoa.com.smilealarm.Object.FriendObject;
+
 public class AuthenticateModel {
 	private static String REFERENCE_NAME = "User";
 

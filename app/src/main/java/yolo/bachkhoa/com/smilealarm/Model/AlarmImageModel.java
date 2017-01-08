@@ -2,6 +2,7 @@ package yolo.bachkhoa.com.smilealarm.Model;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -80,7 +81,7 @@ public class AlarmImageModel extends Model{
         callbackList.add(callback);
     }
 
-    public void insert(final Date time, Bitmap image, final String text){
+    public void insert(final Date time, Bitmap image, final String text, final EventHandle<String> toast){
         final String name = FirebaseAuth.getInstance().getCurrentUser().getUid() + time.getTime();
         StorageService.saveImage(name, image, new EventHandle<String>() {
             @Override
@@ -89,6 +90,7 @@ public class AlarmImageModel extends Model{
                 DatabaseReference newImage = alarmRef.child(df.format(time));
                 newImage.child("ImageName").setValue(name);
                 newImage.child("Text").setValue(text);
+                toast.onSuccess("You're successfully share you photo");
             }
 
             @Override

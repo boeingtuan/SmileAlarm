@@ -4,8 +4,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class AlarmImageEntity {
-    String ImageName;
-    String Text;
+    private String ImageName;
+    private String Text;
 
     public String getImageName() {
         return ImageName;

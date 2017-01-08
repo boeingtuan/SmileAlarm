@@ -125,7 +125,7 @@ public class TimeLineFragment extends Fragment {
             ImageView userImage = (ImageView) row.findViewById(R.id.user_image);
             TextView username = (TextView) row.findViewById(R.id.nameUser);
             TextView time = (TextView) row.findViewById(R.id.time);
-            ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
+            final ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
 
             AlarmImageEntity item = entity_map.get(id_list.get(position));
             try {
@@ -134,8 +134,18 @@ public class TimeLineFragment extends Fragment {
                 Date date = format.parse(id_list.get(position));
                 format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
                 time.setText(format.format(date));
+                StorageService.getImage(item.getImageName(), new EventHandle<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap o) {
+                        Log.d("Test", "load complete");
+                        alarmImage.setImageBitmap(o);
+                    }
 
-                alarmImage.setImageBitmap(item.getImage());
+                    @Override
+                    public void onError(String o) {
+
+                    }
+                });
                 Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
             } catch (Exception e){
                 Log.d("SmileTimeline", "Can't load image " + e.getMessage());

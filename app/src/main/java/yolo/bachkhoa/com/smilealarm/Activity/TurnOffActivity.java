@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import yolo.bachkhoa.com.smilealarm.Model.AlarmImageModel;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Service.StorageService;
 
@@ -164,7 +166,18 @@ public class TurnOffActivity extends Activity {
                 share.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlarmImageModel.getInstance().insert(new Date(), StorageService.scaleBitmap(mBitmap, 512, 512), "Have a nice day");
+                        AlarmImageModel.getInstance().insert(new Date(), StorageService.scaleBitmap(mBitmap, 3 * 256, 4 * 256), "Have a nice day", new EventHandle<String>() {
+                            @Override
+                            public void onSuccess(String o) {
+                                Toast.makeText(TurnOffActivity.this.getApplicationContext(), o, Toast.LENGTH_SHORT).show();
+                                TurnOffActivity.this.onBackPressed();
+                            }
+
+                            @Override
+                            public void onError(String o) {
+
+                            }
+                        });
                     }
                 });
                 share.setVisibility(View.VISIBLE);

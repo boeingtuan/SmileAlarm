@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -19,6 +20,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,14 +29,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandleWithKey;
 import yolo.bachkhoa.com.smilealarm.Object.AlarmObject;
 import yolo.bachkhoa.com.smilealarm.Object.FriendObject;
 import yolo.bachkhoa.com.smilealarm.R;
+import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
 public class FriendListFragment extends Fragment {
 
     private List<FriendObject> friendList = new ArrayList<FriendObject>();
-    private FriendObject myProfile = null;
     private FriendItemAdapter adapter;
 
     public static FriendListFragment newInstance() {
@@ -46,26 +50,7 @@ public class FriendListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (friendList.size() == 0) {
-            GraphRequest graphMeRequest = GraphRequest.newMeRequest(
-                    AccessToken.getCurrentAccessToken(),
-                    new GraphRequest.GraphJSONObjectCallback() {
-                        @Override
-                        public void onCompleted(
-                                JSONObject jsonObject,
-                                GraphResponse response) {
-                            // Application code for users friends
-                            Log.d("friend123", jsonObject.toString());
-                            FriendObject friend = null;
-                            try {
-                                friend = new FriendObject(jsonObject.getString("name"), jsonObject.getString("id"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            myProfile = friend;
-                            //adapter.notifyDataSetChanged();
-                        }
-                    });
-            graphMeRequest.executeAsync();
+
             GraphRequest graphRequest = GraphRequest.newMyFriendsRequest(
                     AccessToken.getCurrentAccessToken(),
                     new GraphRequest.GraphJSONArrayCallback() {
@@ -93,10 +78,12 @@ public class FriendListFragment extends Fragment {
         }
 
         View rootView = inflater.inflate(R.layout.fragment_friend_list, container, false);
-        //((TextView)rootView.findViewById(R.id.name)).setText(myProfile.getName());
+        ((TextView)rootView.findViewById(R.id.name)).setText(UserService.getUserDisplayName());
         ListView friend_list = (ListView) rootView.findViewById(R.id.friend_list);
         adapter = new FriendItemAdapter(friendList, this.getContext());
         friend_list.setAdapter(adapter);
+        ImageView userImage = (ImageView)rootView.findViewById(R.id.profile_image);
+        Picasso.with(this.getContext()).load(UserService.getUserImageUrl()).into(userImage);
         return rootView;
     }
 
@@ -138,6 +125,20 @@ public class FriendListFragment extends Fragment {
             //final TextView id = (TextView) row.findViewById(R.id.id);
             FriendObject object = friendList.get(position);
             name.setText(object.getName());
+            final ImageView userImage = (ImageView)row.findViewById(R.id.profile_image);
+            UserService.getUser(object.getId(), new EventHandleWithKey<String, UserEntity>() {
+                @Override
+                public void onSuccess(String key, UserEntity o) {
+                    Log.d("friend456", o.toString());
+                    Picasso.with(FriendListFragment.this.getContext()).load(o.getAvatar()).into(userImage);
+                }
+
+                @Override
+                public void onError(String o) {
+
+                }
+            });
+
             //id.setText(object.getId());
             return row;
         }

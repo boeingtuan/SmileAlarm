@@ -41,9 +41,11 @@ import java.util.List;
 import java.util.Locale;
 
 import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
+import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Model.AlarmImageModel;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
 import yolo.bachkhoa.com.smilealarm.Model.FirebaseCallback;
+import yolo.bachkhoa.com.smilealarm.Model.TimelineModel;
 import yolo.bachkhoa.com.smilealarm.Object.AlarmObject;
 import yolo.bachkhoa.com.smilealarm.Object.AlarmReceiver;
 import yolo.bachkhoa.com.smilealarm.Object.StoreData;
@@ -68,21 +70,33 @@ public class TimeLineFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_time_line, container, false);
         ListView alarm_list = (ListView) rootView.findViewById(R.id.timeline_list);
-        adapter = new TimelineItemAdapter(alarmImageModel.id_list, alarmImageModel.entity_map, this.getContext());
-        alarmImageModel.addCallback(new FirebaseCallback<String>() {
+//        adapter = new TimelineItemAdapter(alarmImageModel.id_list, alarmImageModel.entity_map, this.getContext());
+//        alarmImageModel.addCallback(new FirebaseCallback<String>() {
+//            @Override
+//            public void onInserted(String o) {
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onUpdated(String o) {
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onDeleted(String o) {
+//                adapter.notifyDataSetChanged();
+//            }
+//        });
+        adapter = new TimelineItemAdapter(TimelineModel.keys, TimelineModel.timeline, TimelineModel.alarmUser, this.getContext());
+        TimelineModel.addCallback(new EventHandle<String>() {
             @Override
-            public void onInserted(String o) {
+            public void onSuccess(String o) {
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onUpdated(String o) {
-                adapter.notifyDataSetChanged();
-            }
+            public void onError(String o) {
 
-            @Override
-            public void onDeleted(String o) {
-                adapter.notifyDataSetChanged();
             }
         });
         alarm_list.setAdapter(adapter);
@@ -93,11 +107,13 @@ public class TimeLineFragment extends Fragment {
 
         List<String> id_list;
         HashMap<String, AlarmImageEntity> entity_map;
+        HashMap<String, UserEntity> users;
         Context context;
 
-        public TimelineItemAdapter(List<String> id_list, HashMap<String, AlarmImageEntity> entity_map, Context context) {
+        public TimelineItemAdapter(List<String> id_list, HashMap<String, AlarmImageEntity> entity_map, HashMap<String, UserEntity> users, Context context) {
             this.id_list = id_list;
             this.entity_map = entity_map;
+            this.users = users;
             this.context = context;
         }
 
@@ -130,13 +146,21 @@ public class TimeLineFragment extends Fragment {
             final ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
 
             AlarmImageEntity item = entity_map.get(id_list.get(position));
+            UserEntity user = users.get(id_list.get(position));
             try {
-                username.setText(UserService.getUserDisplayName());
+                if (user != null) {
+                    username.setText(user.getName());
+                    Picasso.with(context).load(user.getAvatar()).into(userImage);
+                }
+                else {
+                    username.setText(UserService.getUserDisplayName());
+                    Picasso.with(context).load(UserService.getUserImageUrl().toString()).into(userImage);
+                }
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
                 Date date = format.parse(id_list.get(position));
                 format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
                 time.setText(format.format(date));
-                Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
+
                 if (alarmImageModel.images.get(id_list.get(position)) == null) {
                     Log.d("Load Image", item.getImageName() + "");
                     StorageService.getImage(item.getImageName(), new EventHandle<Bitmap>() {

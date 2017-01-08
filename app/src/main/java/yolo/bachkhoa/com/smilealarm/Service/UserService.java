@@ -19,12 +19,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import yolo.bachkhoa.com.smilealarm.Entity.TimeLineEntity;
 import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandleWithKey;
+import yolo.bachkhoa.com.smilealarm.Model.TimelineModel;
 
 public class UserService {
-    public static HashMap<String, Bitmap> avatarMap = new HashMap<>();
     private static FirebaseUser user;
     private static DatabaseReference userRef;
     public static void init(){
@@ -61,6 +62,7 @@ public class UserService {
                 Log.d("User", dataSnapshot.toString());
                 final UserEntity userEntity = dataSnapshot.getValue(UserEntity.class);
                 eventHandle.onSuccess(dataSnapshot.getKey(), userEntity);
+                TimelineModel.addAlarm(userEntity);
             }
 
             @Override

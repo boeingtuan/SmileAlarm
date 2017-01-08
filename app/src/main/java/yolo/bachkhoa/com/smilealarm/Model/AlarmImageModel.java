@@ -48,7 +48,7 @@ public class AlarmImageModel extends Model<AlarmImageEntity>{
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
                 final AlarmImageEntity alarmImageEntity = dataSnapshot.getValue(AlarmImageEntity.class);
                 addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
-                Log.d("Callback size", callbackList.size() + "");
+                TimelineModel.addAlarm(dataSnapshot.getKey(), alarmImageEntity);
                 for (FirebaseCallback<String> callback : callbackList) {
                     callback.onInserted(dataSnapshot.getKey());
                 }

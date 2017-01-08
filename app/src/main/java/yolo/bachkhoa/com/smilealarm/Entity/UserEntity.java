@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 @IgnoreExtraProperties
 public class UserEntity {
-    String Avatar;
-    String Name;
-    HashMap<String, AlarmImageEntity> AlarmImage;
+    private String Avatar;
+    private String Name;
+    private HashMap<String, AlarmImageEntity> AlarmImage;
 
     public String getAvatar() {
         return Avatar;

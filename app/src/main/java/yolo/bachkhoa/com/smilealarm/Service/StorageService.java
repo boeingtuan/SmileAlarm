@@ -26,7 +26,7 @@ public class StorageService {
     public static String saveImage(String name, Bitmap bitmap, final EventHandle<String> eventHandle){
         StorageReference imageStorage = storageRef.child(name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 15, baos);
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = imageStorage.putBytes(data);

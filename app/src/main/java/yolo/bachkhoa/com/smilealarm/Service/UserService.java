@@ -17,12 +17,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandleWithKey;
 
 public class UserService {
-
+    public static HashMap<String, Bitmap> avatarMap = new HashMap<>();
     private static FirebaseUser user;
     private static DatabaseReference userRef;
     public static void init(){

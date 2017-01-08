@@ -14,14 +14,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
+import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
 import yolo.bachkhoa.com.smilealarm.Service.StorageService;
 
-public class AlarmImageModel extends Model{
+public class AlarmImageModel extends Model<AlarmImageEntity>{
 	private static String REFERENCE_NAME = "AlarmImage";
     private DatabaseReference alarmRef;
+    public HashMap<String, Bitmap> images = new HashMap<>();
 
     private static AlarmImageModel alarmImageModel = new AlarmImageModel();
     private AlarmImageModel(){

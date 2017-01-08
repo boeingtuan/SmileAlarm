@@ -52,6 +52,7 @@ public class UserService {
     }
 
     public static void getUser(String uid, final EventHandleWithKey<String, UserEntity> eventHandle){
+        Log.d("User", uid);
         userRef.orderByChild("FacebookId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

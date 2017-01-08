@@ -13,6 +13,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
 import yolo.bachkhoa.com.smilealarm.Fragment.TimeLineFragment;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
@@ -42,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
         //TODO init singleton model
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Log.d("SmileLogin", "test");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);

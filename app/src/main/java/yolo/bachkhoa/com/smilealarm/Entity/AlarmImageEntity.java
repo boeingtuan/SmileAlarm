@@ -1,11 +1,15 @@
 package yolo.bachkhoa.com.smilealarm.Entity;
 
+import android.graphics.Bitmap;
+
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class AlarmImageEntity {
-    private String ImageName;
-    private String Text;
+    String ImageName;
+    String Text;
+    Bitmap bitmap;
 
     public String getImageName() {
         return ImageName;
@@ -21,5 +25,15 @@ public class AlarmImageEntity {
 
     public void setText(String Text) {
         this.Text = Text;
+    }
+
+    @Exclude
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    @Exclude
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

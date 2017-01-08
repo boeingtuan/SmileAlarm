@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,6 +18,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import yolo.bachkhoa.com.smilealarm.Object.FriendObject;
 
 public class AuthenticateModel {
 	private static String REFERENCE_NAME = "User";
@@ -45,6 +53,18 @@ public class AuthenticateModel {
     		public void onSuccess(Object o){
                 Log.d("SmileLogin", "Test");
     			DatabaseReference user =  mUser.child(mAuth.getCurrentUser().getUid());
+                GraphRequest graphMeRequest = GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject jsonObject,
+                                    GraphResponse response) {
+                                // Application code for users friends
+                                Log.d("friend123", jsonObject.toString());
+                            }
+                        });
+                graphMeRequest.executeAsync();
     			user.child("AlarmList").setValue(0);
     		    user.child("AlarmImage").setValue(0);
     		    user.child("Friend").setValue(0);

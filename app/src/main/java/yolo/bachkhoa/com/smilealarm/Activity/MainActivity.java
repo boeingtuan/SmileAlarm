@@ -1,12 +1,13 @@
 package yolo.bachkhoa.com.smilealarm.Activity;
 
-import android.os.Bundle;
+import android.graphics.Bitmap;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
 import yolo.bachkhoa.com.smilealarm.Fragment.TimeLineFragment;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandleWithKey;
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
 

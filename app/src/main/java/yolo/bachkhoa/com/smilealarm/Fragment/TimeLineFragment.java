@@ -1,17 +1,34 @@
 package yolo.bachkhoa.com.smilealarm.Fragment;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.AlarmClock;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.squareup.picasso.Picasso;
 
@@ -23,9 +40,16 @@ import java.util.Locale;
 
 import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
 import yolo.bachkhoa.com.smilealarm.Model.AlarmImageModel;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
 import yolo.bachkhoa.com.smilealarm.Model.FirebaseCallback;
+import yolo.bachkhoa.com.smilealarm.Object.AlarmObject;
+import yolo.bachkhoa.com.smilealarm.Object.AlarmReceiver;
+import yolo.bachkhoa.com.smilealarm.Object.StoreData;
 import yolo.bachkhoa.com.smilealarm.R;
+import yolo.bachkhoa.com.smilealarm.Service.StorageService;
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class TimeLineFragment extends Fragment {
 

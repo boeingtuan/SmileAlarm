@@ -9,6 +9,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,25 +42,13 @@ public class AlarmImageModel extends Model{
         alarmRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
-                final AlarmImageEntity alarmImageEntity = new AlarmImageEntity();
-                alarmImageEntity.setText(dataSnapshot.child("Text").getValue().toString());
-                Log.d("SmileAlarm:onChildAdded", dataSnapshot.child("ImageName").getValue().toString());
-                StorageService.getImage(dataSnapshot.child("ImageName").getValue().toString(), new EventHandle<Bitmap>() {
-                    @Override
-                    public void onSuccess(Bitmap o) {
-                        Log.d("Test", "load complete");
-                        alarmImageEntity.setImage(o);
-                        addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
-                        for(FirebaseCallback<String> callback: callbackList){
-                            callback.onInserted(dataSnapshot.getKey());
-                        }
-                    }
-
-                    @Override
-                    public void onError(String o) {
-
-                    }
-                });
+                Log.d("abc", dataSnapshot.toString());
+                final AlarmImageEntity alarmImageEntity = dataSnapshot.getValue(AlarmImageEntity.class);
+                Log.d("abc", alarmImageEntity.getText() + "");
+                addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
+                for (FirebaseCallback<String> callback : callbackList) {
+                    callback.onInserted(dataSnapshot.getKey());
+                }
             }
 
             @Override
@@ -90,13 +80,14 @@ public class AlarmImageModel extends Model{
         callbackList.add(callback);
     }
 
-    public void insert(Date time, Bitmap image, final String text){
+    public void insert(final Date time, Bitmap image, final String text){
         final String name = FirebaseAuth.getInstance().getCurrentUser().getUid() + time.getTime();
         StorageService.saveImage(name, image, new EventHandle<String>() {
             @Override
             public void onSuccess(String o) {
-                DatabaseReference newImage = alarmRef.push();
-                newImage.child("FileName").setValue(name);
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+                DatabaseReference newImage = alarmRef.child(df.format(time));
+                newImage.child("ImageName").setValue(name);
                 newImage.child("Text").setValue(text);
             }
 

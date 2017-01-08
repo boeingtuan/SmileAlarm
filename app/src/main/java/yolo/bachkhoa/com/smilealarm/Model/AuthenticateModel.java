@@ -5,7 +5,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
 
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
@@ -51,17 +56,30 @@ public class AuthenticateModel {
     		public void onSuccess(final Object o){
                 Log.d("SmileLogin", "Test");
                 UserService.init();
-    			final DatabaseReference user =  mUser.child(mAuth.getCurrentUser().getUid());
+                final DatabaseReference user = mUser.child(mAuth.getCurrentUser().getUid());
                 user.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.hasChildren()) {
-                            user.child("AlarmList").setValue(0);
-                            user.child("AlarmImage").setValue(0);
-                            user.child("Friend").setValue(0);
-                            user.child("Info").child("Name").setValue(UserService.getUserDisplayName());
+                       if (!dataSnapshot.hasChildren()) {
+                            user.child("Name").setValue(UserService.getUserDisplayName());
                             Uri imageUri = UserService.getUserImageUrl();
-                            user.child("Info").child("Avatar").setValue(imageUri.toString());
+                            user.child("Avatar").setValue(imageUri.toString());
+                            GraphRequest graphMeRequest = GraphRequest.newMeRequest(
+                                    AccessToken.getCurrentAccessToken(),
+                                    new GraphRequest.GraphJSONObjectCallback() {
+                                        @Override
+                                        public void onCompleted(
+                                                JSONObject jsonObject,
+                                                GraphResponse response) {
+                                            try {
+                                                Log.d("abc", jsonObject.toString());
+                                                user.child("FacebookId").setValue(jsonObject.getString("id"));
+                                            } catch (Exception e) {
+
+                                            }
+                                        }
+                                    });
+                            graphMeRequest.executeAsync();
                         }
                         eventHandle.onSuccess(o);
                         UserService.getFacebookToken(new EventHandle<String>() {

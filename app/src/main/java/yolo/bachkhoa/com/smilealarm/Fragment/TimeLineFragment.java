@@ -1,55 +1,31 @@
 package yolo.bachkhoa.com.smilealarm.Fragment;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.DatePickerDialog;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.AlarmClock;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
 import yolo.bachkhoa.com.smilealarm.Model.AlarmImageModel;
 import yolo.bachkhoa.com.smilealarm.Model.FirebaseCallback;
-import yolo.bachkhoa.com.smilealarm.Object.AlarmObject;
-import yolo.bachkhoa.com.smilealarm.Object.AlarmReceiver;
-import yolo.bachkhoa.com.smilealarm.Object.StoreData;
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
-
-import static android.content.Context.ALARM_SERVICE;
 
 public class TimeLineFragment extends Fragment {
 
@@ -64,8 +40,8 @@ public class TimeLineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_alarm, container, false);
-        ListView alarm_list = (ListView) rootView.findViewById(R.id.alarm_list);
+        View rootView = inflater.inflate(R.layout.fragment_time_line, container, false);
+        ListView alarm_list = (ListView) rootView.findViewById(R.id.timeline_list);
         adapter = new TimelineItemAdapter(alarmImageModel.id_list, alarmImageModel.entity_map, this.getContext());
         alarmImageModel.addCallback(new FirebaseCallback<String>() {
             @Override
@@ -122,16 +98,20 @@ public class TimeLineFragment extends Fragment {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 
             row = inflater.inflate(R.layout.timeline_row, parent, false);
-            ImageView userImage = (ImageView) row.findViewById(R.id.userImage);
-            TextView username = (TextView) row.findViewById(R.id.username);
+            ImageView userImage = (ImageView) row.findViewById(R.id.user_image);
+            TextView username = (TextView) row.findViewById(R.id.nameUser);
+            TextView time = (TextView) row.findViewById(R.id.time);
             ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
-            TextView alarmText = (TextView) row.findViewById(R.id.alarmText);
 
             AlarmImageEntity item = entity_map.get(id_list.get(position));
             try {
-                username.setText(UserService.getUserDisplayName() + "\n" + id_list.get(position));
+                username.setText(UserService.getUserDisplayName());
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
+                Date date = format.parse(id_list.get(position));
+                format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.ENGLISH);
+                time.setText(format.format(date));
+
                 alarmImage.setImageBitmap(item.getImage());
-                alarmText.setText(item.getText());
                 Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
             } catch (Exception e){
                 Log.d("SmileTimeline", "Can't load image " + e.getMessage());

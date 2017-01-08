@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="4dp"
+    android:elevation="2dp"
     android:background="#fff"
     android:clickable="true"
     android:layout_marginTop="5dp"
@@ -19,7 +19,6 @@
         android:orientation="horizontal"
         android:padding="5dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="5dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -48,17 +47,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="25/12/2016 5:35"
-                android:textSize="16sp"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="sans-serif-condensed" />
+                android:textSize="14sp"
+                android:layout_marginLeft="10dp" />
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:id="@+id/alarmImage"
-        android:padding="5dp"
+        android:padding="2dp"
         android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
 </LinearLayout>

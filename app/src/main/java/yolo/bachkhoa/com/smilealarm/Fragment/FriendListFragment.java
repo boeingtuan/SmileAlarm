@@ -46,8 +46,6 @@ public class FriendListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (friendList.size() == 0) {
-            final Bundle params = new Bundle();
-            params.putString("fields", "email,name,id");
             GraphRequest graphMeRequest = GraphRequest.newMeRequest(
                     AccessToken.getCurrentAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
@@ -59,7 +57,7 @@ public class FriendListFragment extends Fragment {
                             Log.d("friend123", jsonObject.toString());
                             FriendObject friend = null;
                             try {
-                                friend = new FriendObject(jsonObject.getString("name"), jsonObject.getString("id"), jsonObject.getString("email"));
+                                friend = new FriendObject(jsonObject.getString("name"), jsonObject.getString("id"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -67,7 +65,6 @@ public class FriendListFragment extends Fragment {
                             //adapter.notifyDataSetChanged();
                         }
                     });
-            graphMeRequest.setParameters(params);
             graphMeRequest.executeAsync();
             GraphRequest graphRequest = GraphRequest.newMyFriendsRequest(
                     AccessToken.getCurrentAccessToken(),
@@ -78,29 +75,12 @@ public class FriendListFragment extends Fragment {
                                 GraphResponse response) {
                             // Application code for users friends
                             try {
-                                //JSONArray friends = response.getJSONObject().getJSONArray("data");
                                 JSONArray friends = jsonArray;
                                 for (int i = 0; i < friends.length(); i++) {
                                     final JSONObject object = friends.getJSONObject(i);
                                     //Log.d("friend123", object.toString());
-                                    Bundle pa = new Bundle();
-                                    pa.putString("fields", "url");
-                                    GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + object.getString("id") + "/picture", null, HttpMethod.GET,
-                                            new GraphRequest.Callback() {
-                                                @Override
-                                                public void onCompleted(GraphResponse graphResponse) {
-                                                    FriendObject friend = null;
-                                                    try {
-                                                        Log.d("friend123", graphResponse.getJSONObject().toString());
-                                                        friend = new FriendObject(object.getString("name"), object.getString("id"), graphResponse.getJSONObject().toString());
-                                                        friendList.add(friend);
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            });
-                                    request.setParameters(pa);
-                                    request.executeAsync();
+                                    FriendObject friend = new FriendObject(object.getString("name"), object.getString("id"));
+                                    friendList.add(friend);
                                 }
                                 //Log.d("friend123", response.getJSONObject().getJSONArray("data").toString());
                                 adapter.notifyDataSetChanged();

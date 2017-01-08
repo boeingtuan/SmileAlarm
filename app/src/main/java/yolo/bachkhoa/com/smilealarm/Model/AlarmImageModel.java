@@ -42,10 +42,9 @@ public class AlarmImageModel extends Model{
         alarmRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
-                Log.d("abc", dataSnapshot.toString());
                 final AlarmImageEntity alarmImageEntity = dataSnapshot.getValue(AlarmImageEntity.class);
-                Log.d("abc", alarmImageEntity.getText() + "");
                 addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
+                Log.d("Callback size", callbackList.size() + "");
                 for (FirebaseCallback<String> callback : callbackList) {
                     callback.onInserted(dataSnapshot.getKey());
                 }

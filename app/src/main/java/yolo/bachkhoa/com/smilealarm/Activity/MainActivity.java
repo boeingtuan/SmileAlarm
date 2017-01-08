@@ -51,21 +51,6 @@ public class MainActivity extends AppCompatActivity {
         //TODO init singleton model
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        UserService.getUser("1880362925529801", new EventHandleWithKey<String, UserEntity>() {
-            @Override
-            public void onSuccess(String key, UserEntity o) {
-                Log.d("UserImage", o.getAvatar() + "");
-                Log.d("UserName", o.getName() + "");
-               // Log.d("UserAlarm", o.getAlarmImage() + "");
-            }
-
-            @Override
-            public void onError(String o) {
-
-            }
-        });
-
-        Log.d("SmileLogin", "test");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);

@@ -46,7 +46,6 @@ public class StorageService {
 
     public static void getImage(String name, final EventHandle<Bitmap> eventHandle){
         StorageReference ref = storageRef.child(name);
-        Log.d("Test", ref.getPath());
         final long ONE_MEGABYTE = 512 * 512;
         ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override

@@ -129,21 +129,27 @@ public class TimeLineFragment extends Fragment {
             final ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
             TextView alarmText = (TextView) row.findViewById(R.id.alarmText);
 
-            AlarmImageEntity item = entity_map.get(id_list.get(position));
+            final AlarmImageEntity item = entity_map.get(id_list.get(position));
             username.setText(UserService.getUserDisplayName() + "\n" + id_list.get(position));
-            Log.d("abc", item.getImageName() + "");
-            StorageService.getImage(item.getImageName(), new EventHandle<Bitmap>() {
-                @Override
-                public void onSuccess(Bitmap o) {
-                    Log.d("Test", "load complete");
-                    alarmImage.setImageBitmap(o);
-                }
+            if (item.getBitmap() == null) {
+                Log.d("Load Image", item.getImageName() + "");
+                StorageService.getImage(item.getImageName(), new EventHandle<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap o) {
+                        Log.d("Test", "load complete");
+                        alarmImage.setImageBitmap(o);
+                        item.setBitmap(o);
+                    }
 
-                @Override
-                public void onError(String o) {
+                    @Override
+                    public void onError(String o) {
 
-                }
-            });
+                    }
+                });
+            }
+            else {
+                alarmImage.setImageBitmap(item.getBitmap());
+            }
             alarmText.setText(item.getText());
             Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
             return row;

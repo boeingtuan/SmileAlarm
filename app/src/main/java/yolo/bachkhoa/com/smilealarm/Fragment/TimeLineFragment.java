@@ -42,11 +42,13 @@ import java.util.Map;
 
 import yolo.bachkhoa.com.smilealarm.Entity.AlarmImageEntity;
 import yolo.bachkhoa.com.smilealarm.Model.AlarmImageModel;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
 import yolo.bachkhoa.com.smilealarm.Model.FirebaseCallback;
 import yolo.bachkhoa.com.smilealarm.Object.AlarmObject;
 import yolo.bachkhoa.com.smilealarm.Object.AlarmReceiver;
 import yolo.bachkhoa.com.smilealarm.Object.StoreData;
 import yolo.bachkhoa.com.smilealarm.R;
+import yolo.bachkhoa.com.smilealarm.Service.StorageService;
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
 import static android.content.Context.ALARM_SERVICE;
@@ -124,18 +126,26 @@ public class TimeLineFragment extends Fragment {
             row = inflater.inflate(R.layout.timeline_row, parent, false);
             ImageView userImage = (ImageView) row.findViewById(R.id.userImage);
             TextView username = (TextView) row.findViewById(R.id.username);
-            ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
+            final ImageView alarmImage = (ImageView) row.findViewById(R.id.alarmImage);
             TextView alarmText = (TextView) row.findViewById(R.id.alarmText);
 
             AlarmImageEntity item = entity_map.get(id_list.get(position));
-            try {
-                username.setText(UserService.getUserDisplayName() + "\n" + id_list.get(position));
-                alarmImage.setImageBitmap(item.getImage());
-                alarmText.setText(item.getText());
-                Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
-            } catch (Exception e){
-                Log.d("SmileTimeline", "Can't load image " + e.getMessage());
-            }
+            username.setText(UserService.getUserDisplayName() + "\n" + id_list.get(position));
+            Log.d("abc", item.getImageName() + "");
+            StorageService.getImage(item.getImageName(), new EventHandle<Bitmap>() {
+                @Override
+                public void onSuccess(Bitmap o) {
+                    Log.d("Test", "load complete");
+                    alarmImage.setImageBitmap(o);
+                }
+
+                @Override
+                public void onError(String o) {
+
+                }
+            });
+            alarmText.setText(item.getText());
+            Picasso.with(context).load(UserService.getUserImageUrl()).into(userImage);
             return row;
         }
     }

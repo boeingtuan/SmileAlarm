@@ -3,23 +3,19 @@ package yolo.bachkhoa.com.smilealarm.Service;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Model.EventHandle;
@@ -55,35 +51,34 @@ public class UserService {
         });
     }
 
-    public static void getUserList(String uid, final EventHandleWithKey<String, UserEntity> eventHandle){
-        userRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+    public static void getUser(String uid, final EventHandleWithKey<String, UserEntity> eventHandle){
+        userRef.orderByChild("FacebookId").equalTo(uid).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                final UserEntity userEntity = new UserEntity();
-                userEntity.setName(dataSnapshot.child("Info").child("Username").getValue().toString());
-                String avatarUrl = dataSnapshot.child("Info").child("Avatar").getValue().toString();
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(avatarUrl).getContent());
-                    userEntity.setAvatar(bitmap);
-                } catch (Exception e){
-                    eventHandle.onError("Can't load image");
-                }
-                Iterator<DataSnapshot> alarmImages = dataSnapshot.child("AlarmImage").getChildren().iterator();
-                HashMap<String, String> userAlarm = new HashMap<>();
-                int i = 0;
-                while(alarmImages.hasNext()){
-                    if(i++ > 10)
-                        break;
-                    DataSnapshot alarmImage = alarmImages.next();
-                    userAlarm.put(alarmImage.getKey(), alarmImage.getValue().toString());
-                }
-                userEntity.setAlarmImage(userAlarm);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d("User", dataSnapshot.toString());
+                final UserEntity userEntity = dataSnapshot.getValue(UserEntity.class);
                 eventHandle.onSuccess(dataSnapshot.getKey(), userEntity);
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                    eventHandle.onError("Error");
-                }
+
+            }
         });
     }
 }

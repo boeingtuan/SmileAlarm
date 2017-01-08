@@ -1,24 +1,25 @@
 package yolo.bachkhoa.com.smilealarm.Entity;
 
-import android.graphics.Bitmap;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+@IgnoreExtraProperties
 public class AlarmImageEntity {
-    Bitmap image;
-    String text;
+    String ImageName;
+    String Text;
 
-    public Bitmap getImage() {
-        return image;
+    public String getImageName() {
+        return ImageName;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setImageName(String ImageName) {
+        this.ImageName = ImageName;
     }
 
     public String getText() {
-        return text;
+        return Text;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String Text) {
+        this.Text = Text;
     }
 }

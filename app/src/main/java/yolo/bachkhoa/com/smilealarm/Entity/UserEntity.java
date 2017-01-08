@@ -3,34 +3,37 @@ package yolo.bachkhoa.com.smilealarm.Entity;
 import android.graphics.Bitmap;
 import android.media.Image;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.HashMap;
 
+@IgnoreExtraProperties
 public class UserEntity {
-    Bitmap avatar;
-    String name;
-    HashMap<String, String> alarmImage;
+    String Avatar;
+    String Name;
+    HashMap<String, AlarmImageEntity> AlarmImage;
 
-    public Bitmap getAvatar() {
-        return avatar;
+    public String getAvatar() {
+        return Avatar;
     }
 
-    public void setAvatar(Bitmap avatar) {
-        this.avatar = avatar;
+    public void setAvatar(String Avatar) {
+        this.Avatar = Avatar;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String Name) {
+        this.Name = Name;
     }
 
-    public HashMap<String, String> getAlarmImage() {
-        return alarmImage;
+    public HashMap<String, AlarmImageEntity> getAlarmImage() {
+        return AlarmImage;
     }
 
-    public void setAlarmImage(HashMap<String, String> alarmImage) {
-        this.alarmImage = alarmImage;
+    public void setAlarmImage(HashMap<String, AlarmImageEntity> AlarmImage) {
+        this.AlarmImage = AlarmImage;
     }
 }

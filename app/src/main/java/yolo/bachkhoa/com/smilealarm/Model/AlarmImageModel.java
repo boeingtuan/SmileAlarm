@@ -42,25 +42,13 @@ public class AlarmImageModel extends Model{
         alarmRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
-                final AlarmImageEntity alarmImageEntity = new AlarmImageEntity();
-                alarmImageEntity.setText(dataSnapshot.child("Text").getValue().toString());
-                Log.d("SmileAlarm:onChildAdded", dataSnapshot.child("ImageName").getValue().toString());
-                StorageService.getImage(dataSnapshot.child("ImageName").getValue().toString(), new EventHandle<Bitmap>() {
-                    @Override
-                    public void onSuccess(Bitmap o) {
-                        Log.d("Test", "load complete");
-                        alarmImageEntity.setImage(o);
-                        addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
-                        for (FirebaseCallback<String> callback : callbackList) {
-                            callback.onInserted(dataSnapshot.getKey());
-                        }
-                    }
-
-                    @Override
-                    public void onError(String o) {
-
-                    }
-                });
+                Log.d("abc", dataSnapshot.toString());
+                final AlarmImageEntity alarmImageEntity = dataSnapshot.getValue(AlarmImageEntity.class);
+                Log.d("abc", alarmImageEntity.getText() + "");
+                addObjectToMap(dataSnapshot.getKey(), alarmImageEntity);
+                for (FirebaseCallback<String> callback : callbackList) {
+                    callback.onInserted(dataSnapshot.getKey());
+                }
             }
 
             @Override

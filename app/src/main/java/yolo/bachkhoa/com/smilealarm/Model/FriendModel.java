@@ -41,20 +41,20 @@ public class FriendModel extends Model<UserEntity>{
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 id_list.add(dataSnapshot.getKey());
-                UserService.getUserList(dataSnapshot.getKey(), new EventHandleWithKey<String, UserEntity>() {
-                    @Override
-                    public void onSuccess(String key, UserEntity o) {
-                        entity_map.put(key, o);
-                        for (FirebaseCallback firebaseCallback : firebaseCallbacks) {
-                            firebaseCallback.onInserted(o);
-                        }
-                    }
-
-                    @Override
-                    public void onError(String o) {
-                        Log.d("SmileFriend", o);
-                    }
-                });
+//                UserService.getUser(dataSnapshot.getKey(), new EventHandleWithKey<String, UserEntity>() {
+//                    @Override
+//                    public void onSuccess(String key, UserEntity o) {
+//                        entity_map.put(key, o);
+//                        for (FirebaseCallback firebaseCallback : firebaseCallbacks) {
+//                            firebaseCallback.onInserted(o);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(String o) {
+//                        Log.d("SmileFriend", o);
+//                    }
+//                });
             }
 
             @Override

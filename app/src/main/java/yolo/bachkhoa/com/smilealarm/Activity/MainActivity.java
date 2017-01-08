@@ -21,9 +21,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import yolo.bachkhoa.com.smilealarm.Entity.UserEntity;
 import yolo.bachkhoa.com.smilealarm.Fragment.AlarmFragment;
 import yolo.bachkhoa.com.smilealarm.Fragment.TimeLineFragment;
 import yolo.bachkhoa.com.smilealarm.Model.AuthenticateModel;
+import yolo.bachkhoa.com.smilealarm.Model.EventHandleWithKey;
 import yolo.bachkhoa.com.smilealarm.R;
 import yolo.bachkhoa.com.smilealarm.Service.UserService;
 
@@ -49,6 +51,19 @@ public class MainActivity extends AppCompatActivity {
         //TODO init singleton model
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        UserService.getUser("1880362925529801", new EventHandleWithKey<String, UserEntity>() {
+            @Override
+            public void onSuccess(String key, UserEntity o) {
+                Log.d("UserImage", o.getAvatar() + "");
+                Log.d("UserName", o.getName() + "");
+               // Log.d("UserAlarm", o.getAlarmImage() + "");
+            }
+
+            @Override
+            public void onError(String o) {
+
+            }
+        });
 
         Log.d("SmileLogin", "test");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

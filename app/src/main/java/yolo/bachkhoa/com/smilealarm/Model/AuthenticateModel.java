@@ -61,12 +61,9 @@ public class AuthenticateModel {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                        if (!dataSnapshot.hasChildren()) {
-                            user.child("AlarmList").setValue(0);
-                            user.child("AlarmImage").setValue(0);
-                            user.child("Friend").setValue(0);
-                            user.child("Info").child("Name").setValue(UserService.getUserDisplayName());
+                            user.child("Name").setValue(UserService.getUserDisplayName());
                             Uri imageUri = UserService.getUserImageUrl();
-                            user.child("Info").child("Avatar").setValue(imageUri.toString());
+                            user.child("Avatar").setValue(imageUri.toString());
                             GraphRequest graphMeRequest = GraphRequest.newMeRequest(
                                     AccessToken.getCurrentAccessToken(),
                                     new GraphRequest.GraphJSONObjectCallback() {
@@ -76,7 +73,7 @@ public class AuthenticateModel {
                                                 GraphResponse response) {
                                             try {
                                                 Log.d("abc", jsonObject.toString());
-                                                user.child("Info").child("FacebookId").setValue(jsonObject.getString("id"));
+                                                user.child("FacebookId").setValue(jsonObject.getString("id"));
                                             } catch (Exception e) {
 
                                             }
